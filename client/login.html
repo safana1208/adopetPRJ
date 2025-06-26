@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdoPet - Login</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Sansita+One&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <img src="assets/logo.png" alt="AdoPet Logo" class="logo" />
+
+    <p class="intro-text">
+      Join the Adopet family and give a furry friend a forever home.
+    </p>
+
+    <input type="text" placeholder="Enter your phone" class="input" />
+    <input type="password" placeholder="Password" class="input" />
+
+    <button class="input" id="create-account-btn">Create a new account</button>
+  </div>
+
+  <script>
+    document.getElementById("create-account-btn").addEventListener("click", function () {
+      window.location.href = "register.html";
+    });
+  </script>
+</body>
+</html>
