@@ -1,0 +1,151 @@
+[
+{
+    "id": "1",
+    "name": "Rex",
+    "age": "5 months",
+    "breed": "Mixed Breed",
+    "type": "dog",
+    "size": "small",
+    "shedding": "low",
+    "image": "assets/rex.jpg",
+    "description":"Rex is a playful and curious puppy who loves to explore the world around him. He's full of energy and always looking for new adventures.",
+    "infoLink": "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
+  },
+  {
+    "id": "2",
+    "name": "Rocky",
+    "age": "3 months",
+    "breed": "Mixed Breed",
+    "type": "dog",
+    "size": "small",
+    "shedding": "low",
+    "image": "assets/rocky.jpg",
+    "description": "Rocky may be small, but his heart is big! He’s cheerful, friendly, and loves cuddles and treats.",
+    "infoLink": "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
+  },
+  {
+    "id": "3",
+    "name": "Bella",
+    "age": "3 years",
+    "breed": "Mixed Breed",
+    "type": "cat",
+    "size": "large",
+    "image": "assets/bella.jpg",
+    "description": "Bella is a calm and independent cat who enjoys lounging by the window and watching the world go by. She’s affectionate when she gets to know you.",
+    "infoLink": "https://www.trupanion.com/pet-blog/article/mixed-breed-cat"
+  },
+  {
+    "id": "4",
+    "name": "Rosie",
+    "age": "4 years",
+    "breed": "German Shepherd",
+    "type": "dog",
+    "size": "large",
+    "shedding": "low",
+    "image": "assets/rosie.jpg",
+    "description":"Rosie is a loyal and intelligent German Shepherd with a protective nature. She thrives on companionship and loves a good game of fetch.",
+    "infoLink": "https://en.wikipedia.org/wiki/German_Shepherd"
+  },
+  {
+    "id": "5",
+    "name": "Nala",
+    "age": "3 months",
+    "breed": "Mixed Breed",
+    "type": "cat",
+    "size": "small",
+    "shedding": "low",
+    "image": "assets/nala.jpg",
+    "description": "Nala is a curious little kitten who’s always full of surprises. She’s gentle, playful, and loves snuggling into warm blankets.",
+    "infoLink":"https://www.trupanion.com/pet-blog/article/mixed-breed-cat"
+  },
+  {
+    "id": "6",
+    "name": "Oliver",
+    "age": "6 months",
+    "breed": "Mixed Breed",
+    "type": "dog",
+    "size": "medium",
+    "shedding": "low",
+    "image": "assets/oliver.jpg",
+    "description": "Oliver is a smart and cheerful pup who’s eager to learn new tricks. He’s energetic, loving, and always up for playtime.",
+    "infoLink": "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
+  },
+  {
+    "id": "7",
+    "name": "Luly",
+    "age": "3 years",
+    "breed": "Persian Cat",
+    "type": "cat",
+    "size": "large",
+    "image": "assets/luly.jpg",
+    "description": "Luly is a sweet and calm Persian cat who loves spending her days napping in the sun. She enjoys quiet environments and bonds deeply with her humans.",
+    "infoLink": "https://en.wikipedia.org/wiki/Persian_cat"
+  },
+  {
+    "id": "8",
+    "name": "Koki",
+    "age": "3 months",
+    "breed": "Golden Retriever",
+    "type": "dog",
+    "size": "small",
+    "image": "assets/koki.jpg",
+    "description": "Koki is an energetic pup who loves playing fetch and being around people.",
+    "infoLink": "https://en.wikipedia.org/wiki/Golden_Retriever"
+  },
+  {
+    "id": "9",
+    "name": "Max",
+    "age": "5 months",
+    "breed": "German Shepherd",
+    "type": "dog",
+    "size":"small",
+    "image":"assets/max.jpg",
+    "description": "Max is a brave and curious young German Shepherd who loves to explore and meet new friends. He’s a quick learner and full of love.",
+    "infoLink": "https://en.wikipedia.org/wiki/German_Shepherd"
+  },
+  {
+    "id": "10",
+    "name": "Zara",
+    "age": "1 year",
+    "breed": "Bengal Cat",
+    "type": "cat",
+    "size": "medium",
+    "shedding": "low",
+    "image": "assets/zara.jpg",
+    "description": "Zara is a stunning Bengal cat with a wild look and a playful spirit. She’s active, intelligent, and loves to climb and explore.",
+    "infoLink": "https://en.wikipedia.org/wiki/Bengal_cat"
+  },
+  {
+    "id": "11",
+    "name": "Shadow",
+    "age": "5 years",
+    "breed": "Husky",
+    "type": "dog",
+    "size": "large",
+    "image": "assets/shadow.jpg",
+    "description": "Shadow is a majestic husky with a calm presence and a deep bond with people. He enjoys long walks and loves the outdoors.",
+    "infoLink": "https://en.wikipedia.org/wiki/Siberian_Husky"
+  },
+  {
+    "id": "12",
+    "name": "Milo",
+    "age": "5 months",
+    "breed": "Siamese Cat",
+    "type": "cat",
+    "size": "small",
+    "image": "assets/milo.jpg",
+    "description": "Milo is a talkative and curious Siamese kitten who loves attention. He’ll happily curl up in your lap and keep you company.",
+    "infoLink": "https://en.wikipedia.org/wiki/Siamese_cat"
+  },
+  {
+    "id": "13",
+    "name": "Speedy",
+    "age": "4 years",
+    "breed": "Scotty",
+    "type": "cat",
+    "size": "medium",
+    "image": "assets/speedy.jpg",
+    "description": "Speedy is a confident cat who walks with pride. He’s friendly, loyal, and always brings joy wherever he goes.",
+    "infoLink": "https://en.wikipedia.org/wiki/Scottish_Terrier"
+  }
+]
