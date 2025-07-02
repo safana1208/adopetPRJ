@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Pet Profile</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <div class="pet-profile-container">
+    <h1><input id="petName" class="pet-input" readonly /></h1>
+    <img id="petImage" src="" alt="Pet Image" style="max-width: 200px;" />
+
+    <p><strong>ID:</strong> <span id="petID"></span></p>
+    <p><strong>Age:</strong> <input id="petAge" class="pet-input" readonly /></p>
+    <p><strong>Breed:</strong> <input id="petBreed" class="pet-input" readonly /></p>
+    <p><strong>Type:</strong> <input id="petType" class="pet-input" readonly /></p>
+    <p><strong>Size:</strong> <input id="petSize" class="pet-input" readonly /></p>
+    <p><strong>Shedding:</strong> <input id="petShedding" class="pet-input" readonly /></p>
+    <p><strong>Description:</strong><br>
+      <textarea id="petDescription" class="pet-input" readonly></textarea>
+    </p>
+    <p><strong>More Info:</strong> 
+      <input id="petInfoLink" class="pet-input" readonly />
+    </p>
+
+    <button id="editBtn">Edit</button>
+    <button id="deleteBtn">Delete</button>
+  </div>
+
+  <script>
+    const pet = JSON.parse(localStorage.getItem("selectedPet"));
+
+    function fillFields(pet) {
+      document.getElementById("petName").value = pet.name || "";
+      document.getElementById("petID").textContent = pet.id || "-";
+      document.getElementById("petAge").value = pet.age || "";
+      document.getElementById("petBreed").value = pet.breed || "";
+      document.getElementById("petType").value = pet.type || "";
+      document.getElementById("petSize").value = pet.size || "";
+      document.getElementById("petShedding").value = pet.shedding || "";
+      document.getElementById("petDescription").value = pet.description || "";
+      document.getElementById("petInfoLink").value = pet.info || "";
+      document.getElementById("petImage").src = pet.image || "";
+    }
+
+    fillFields(pet);
+
+    // מצב עריכה
+    let isEditing = false;
+
+    document.getElementById("editBtn").addEventListener("click", () => {
+      if (!isEditing) {
+        // הפוך לשדות ניתנים לעריכה
+        document.querySelectorAll(".pet-input").forEach(el => el.removeAttribute("readonly"));
+        document.getElementById("editBtn").textContent = "Save";
+        isEditing = true;
+      } else {
+        // שלח לשרת עדכון
+        const updatedPet = {
+          id: pet.id,
+          name: document.getElementById("petName").value,
+          age: document.getElementById("petAge").value,
+          breed: document.getElementById("petBreed").value,
+          type: document.getElementById("petType").value,
+          size: document.getElementById("petSize").value,
+          shedding: document.getElementById("petShedding").value,
+          description: document.getElementById("petDescription").value,
+          info: document.getElementById("petInfoLink").value,
+          image: pet.image
+        };
+
+        fetch(`/api/pets/${pet.id}`, {
+          method: "PUT",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(updatedPet)
+        })
+        .then(res => {
+          if (!res.ok) throw new Error("Update failed");
+          return res.json();
+        })
+        .then(data => {
+          alert("Pet updated successfully.");
+          localStorage.setItem("selectedPet", JSON.stringify(updatedPet));
+          location.reload(); // ריענון להצגת השינויים
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Error updating pet.");
+        });
+      }
+    });
+
+    document.getElementById("deleteBtn").addEventListener("click", () => {
+  if (!pet || !pet.id) {
+    alert("Cannot delete: missing pet ID.");
+    return;
+  }
+
+  const confirmDelete = confirm("Are you sure you want to delete this pet?");
+  if (!confirmDelete) return;
+
+  fetch(`/api/pets/${pet.id}`, {
+    method: "DELETE",
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Pet deleted successfully.");
+        window.location.href = "admin-dashboard.html";
+      } else {
+        alert("Failed to delete pet.");
+      }
+    })
+    .catch(err => {
+      console.error("Error deleting pet:", err);
+      alert("Server error while deleting pet.");
+    });
+});
+  </script>
+</body>
+</html>
