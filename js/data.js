@@ -1,5 +1,6 @@
 const pets = [
   {
+    id: "1",
     name: "Rex",
     age: "5 months",
     breed: "Mixed Breed",
@@ -11,6 +12,7 @@ const pets = [
     infoLink: "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
   },
   {
+    id: "2",
     name: "Rocky",
     age: "3 months",
     breed: "Mixed Breed",
@@ -22,6 +24,7 @@ const pets = [
     infoLink: "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
   },
   {
+    id: "3",
     name: "Bella",
     age: "3 years",
     breed: "Mixed Breed",
@@ -32,6 +35,7 @@ const pets = [
     infoLink: "https://www.trupanion.com/pet-blog/article/mixed-breed-cat"
   },
   {
+    id: "4",
     name: "Rosie",
     age: "4 years",
     breed: "German Shepherd",
@@ -43,6 +47,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/German_Shepherd"
   },
   {
+    id: "5",
     name: "Nala",
     age: "3 months",
     breed: "Mixed Breed",
@@ -54,6 +59,7 @@ const pets = [
     infoLink: "https://www.trupanion.com/pet-blog/article/mixed-breed-cat"
   },
   {
+    id: "6",
     name: "Oliver",
     age: "6 months",
     breed: "Mixed Breed",
@@ -65,6 +71,7 @@ const pets = [
     infoLink: "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
   },
   {
+    id: "7",
     name: "Luly",
     age: "3 years",
     breed: "Persian Cat",
@@ -75,6 +82,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/Persian_cat"
   },
   {
+    id: "8",
     name: "Koki",
     age: "3 months",
     breed: "Golden Retriever",
@@ -85,6 +93,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/Golden_Retriever"
   },
   {
+    id: "9",
     name: "Max",
     age: "5 months",
     breed: "German Shepherd",
@@ -95,6 +104,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/German_Shepherd"
   },
   {
+    id: "10",
     name: "Zara",
     age: "1 year",
     breed: "Bengal Cat",
@@ -106,6 +116,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/Bengal_cat"
   },
   {
+    id: "11",
     name: "Shadow",
     age: "5 years",
     breed: "Husky",
@@ -116,6 +127,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/Siberian_Husky"
   },
   {
+    id: "12",
     name: "Milo",
     age: "5 months",
     breed: "Siamese Cat",
@@ -126,6 +138,7 @@ const pets = [
     infoLink: "https://en.wikipedia.org/wiki/Siamese_cat"
   },
   {
+    id: "13",
     name: "Speedy",
     age: "4 years",
     breed: "Scotty",
