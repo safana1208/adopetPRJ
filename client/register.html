@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AdoPet - Register</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=IM+Fell+Double+Pica&family=Sansita+One&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1 class="register-title">
+      Your perfect pet is just <br /> one click away 🐶🐱
+    </h1>
+
+    <input type="text" placeholder="First name" class="input" id="firstNameInput" />
+    <input type="text" placeholder="Last name" class="input" />
+    <input type="text" placeholder="Enter your phone" class="input" />
+    <input type="password" placeholder="Password" class="input last-input" />
+
+    <!-- כפתור שמירה ומעבר לשאלון -->
+    <button id="register-btn" class="go-to-questions">Start Questionnaire</button>
+
+    <div class="social-login">
+      <a href="https://www.facebook.com/" class="social-item" target="_blank">
+        <img src="assets/facebook.png" alt="Facebook" />
+        <span>Log in with Facebook</span>
+      </a>
+
+      <a href="https://accounts.google.com/" class="social-item" target="_blank">
+        <img src="assets/gmail.png" alt="Gmail" />
+        <span>Log in with gmail</span>
+      </a>
+    </div>
+  </div>
+
+  <!-- סקריפט שמירת השם ומעבר -->
+  <script>
+    document.getElementById("register-btn").addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstNameInput").value;
+
+      if (firstName.trim() !== "") {
+        localStorage.setItem("userFirstName", firstName);
+        window.location.href = "questions.html";
+      } else {
+        alert("Please enter your first name.");
+      }
+    });
+  </script>
+</body>
+</html>
+
+
+  <!-- סקריפט שמירת השם ומעבר -->
+  <script>
+    document.getElementById("register-btn").addEventListener("click", function (e) {
+      e.preventDefault();
+
+      const firstName = document.getElementById("firstNameInput").value;
+
+      if (firstName.trim() !== "") {
+        localStorage.setItem("userFirstName", firstName);
+        window.location.href = "questions.html";
+      } else {
+        alert("Please enter your first name.");
+      }
+    });
+  </script>
+</body>
+</html>
+

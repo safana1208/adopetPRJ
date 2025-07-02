@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Donation</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+25&family=Sanchez&display=swap" rel="stylesheet">
+</head>
+<body class="donation-page">
+  <form class="donation-form">
+    <h2>Select a donation amount</h2>
+    <div class="donation-amounts">
+      <label><input type="radio" name="amount" value="10"> ₪10</label>
+      <label><input type="radio" name="amount" value="20"> ₪20</label>
+      <label><input type="radio" name="amount" value="50"> ₪50</label>
+      <label><input type="radio" name="amount" value="other"> Other</label>
+    </div>
+
+    <div class="card-header">
+      <h3>Debit card / Credit</h3>
+      <img src="assets/cards.png" alt="cards" class="cards-image" width="100">
+    </div>
+
+    <label>Full name
+      <input type="text" name="fullname" required>
+    </label>
+
+    <label>Card number
+      <div class="input-icon">
+        <span class="icon">💳</span>
+        <input type="text" name="cardnumber" placeholder="0000 0000 0000 0000" required>
+      </div>
+    </label>
+
+    <div class="card-details">
+      <div class="field">
+        <label>Expiry date</label>
+        <input type="text" name="expiry" placeholder="MM/YY" required>
+      </div>
+      <div class="field">
+        <label>Security code (CVV)</label>
+        <input type="text" name="cvv" required>
+        <small class="cvv-note">3 or 4 digit code on your card</small>
+      </div>
+    </div>
+
+    <div class="alternative-payments">
+      <button type="button" class="apple-pay">
+        <img src="assets/apple-pay.png" width="63" height="40" alt="Apple Pay"> Donate via Apple Pay
+      </button>
+      <button type="button" class="bit-pay">
+        <img src="assets/bit-logo.png" width="39" height="39" alt="Bit"> Donate via bit
+      </button>
+    </div>
+
+    <label class="monthly-donation">
+      <input type="checkbox" name="monthly"> Make this monthly donation
+    </label>
+
+    <p class="donation-note">Every donation helps a furry friend</p>
+
+    <button type="submit" class="donate-button">Donate 💳</button>
+
+   <img src="assets/cats.png" alt="Cats" class="cat-img" />
+
+  </form>
+  <script>
+  const form = document.querySelector("form");
+
+  form.addEventListener("submit", function (e) {
+    e.preventDefault(); // מונע רענון הדף
+
+    // אפשר להוסיף כאן ולידציה אם רוצים בעתיד
+    window.location.href = "donation-thankyou.html";
+  });
+</script>
+
+</body>
+</html>
