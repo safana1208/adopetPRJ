@@ -1,5 +1,5 @@
 [
-{
+  {
     "id": "1",
     "name": "Rex",
     "age": "5 months",
@@ -8,7 +8,7 @@
     "size": "small",
     "shedding": "low",
     "image": "assets/rex.jpg",
-    "description":"Rex is a playful and curious puppy who loves to explore the world around him. He's full of energy and always looking for new adventures.",
+    "description": "Rex is a playful and curious puppy who loves to explore the world around him. He's full of energy and always looking for new adventures.",
     "infoLink": "https://www.trupanion.com/pet-blog/article/mixed-breed-dog"
   },
   {
@@ -43,8 +43,9 @@
     "size": "large",
     "shedding": "low",
     "image": "assets/rosie.jpg",
-    "description":"Rosie is a loyal and intelligent German Shepherd with a protective nature. She thrives on companionship and loves a good game of fetch.",
-    "infoLink": "https://en.wikipedia.org/wiki/German_Shepherd"
+    "description": "Rosie is a loyal and intelligent German Shepherd with a protective nature. She thrives on companionship and loves a good game of fetch.",
+    "infoLink": "https://en.wikipedia.org/wiki/German_Shepherd",
+    "info": ""
   },
   {
     "id": "5",
@@ -56,7 +57,7 @@
     "shedding": "low",
     "image": "assets/nala.jpg",
     "description": "Nala is a curious little kitten who’s always full of surprises. She’s gentle, playful, and loves snuggling into warm blankets.",
-    "infoLink":"https://www.trupanion.com/pet-blog/article/mixed-breed-cat"
+    "infoLink": "https://www.trupanion.com/pet-blog/article/mixed-breed-cat"
   },
   {
     "id": "6",
@@ -98,8 +99,8 @@
     "age": "5 months",
     "breed": "German Shepherd",
     "type": "dog",
-    "size":"small",
-    "image":"assets/max.jpg",
+    "size": "small",
+    "image": "assets/max.jpg",
     "description": "Max is a brave and curious young German Shepherd who loves to explore and meet new friends. He’s a quick learner and full of love.",
     "infoLink": "https://en.wikipedia.org/wiki/German_Shepherd"
   },
@@ -147,5 +148,12 @@
     "image": "assets/speedy.jpg",
     "description": "Speedy is a confident cat who walks with pride. He’s friendly, loyal, and always brings joy wherever he goes.",
     "infoLink": "https://en.wikipedia.org/wiki/Scottish_Terrier"
+  },
+  {
+    "id": "14",
+    "name": "lora",
+    "age": "3",
+    "breed": "mixed breed",
+    "image": "/uploads/1751819620473-403401331.jpg"
   }
 ]

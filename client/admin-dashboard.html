@@ -17,11 +17,12 @@
 
   <div class="grid" id="admin-pet-container"></div>
 
-  <script src="js/data.js"></script>
   <script>
     const petsContainer = document.getElementById("admin-pet-container");
     const addPetBtn = document.getElementById("addPetBtn");
     const searchInput = document.getElementById("searchInput");
+
+    let pets = [];
 
     function displayPets(filteredPets) {
       petsContainer.innerHTML = "";
@@ -46,36 +47,85 @@
       });
     }
 
-    // הצגת כל החיות בתחילה
-    displayPets(pets);
+    function fetchPets() {
+      fetch("/api/pets")
+        .then(res => res.json())
+        .then(data => {
+          pets = data;
+          displayPets(pets);
+        })
+        .catch(err => {
+          console.error("Error loading pets:", err);
+          petsContainer.innerHTML = "<p>Failed to load pets.</p>";
+        });
+    }
 
-    // חיפוש לפי ID
+    // Load pets on page load
+    fetchPets();
+
+    // Search by ID
     searchInput.addEventListener("input", () => {
       const query = searchInput.value.trim().toLowerCase();
       const filtered = pets.filter(pet => pet.id && pet.id.toLowerCase().includes(query));
       displayPets(filtered);
     });
 
-    // כפתור להוספת חיה חדשה
-    addPetBtn.addEventListener("click", () => {
-      const card = document.createElement("div");
-      card.className = "pet-card";
+    // Add new pet (UI only – server integration not implemented here)
+addPetBtn.addEventListener("click", () => {
+  const card = document.createElement("div");
+  card.className = "pet-card";
 
-      card.innerHTML = `
-        <div class="image-upload-placeholder">
-          <input type="file" accept="image/*" />
-        </div>
-        <div class="pet-info-row">
-          <input type="text" placeholder="Name" class="pet-input" />
-          <input type="text" placeholder="Age" class="pet-input" />
-        </div>
-        <div class="pet-breed-label">Breed:</div>
-        <input type="text" placeholder="Breed" class="pet-input" />
-        <button class="save-btn">Save</button>
-      `;
+  card.innerHTML = `
+    <div class="image-upload-placeholder">
+      <input type="file" accept="image/*" id="petImageInput" />
+    </div>
+    <div class="pet-info-row">
+      <input type="text" placeholder="Name" class="pet-input name-input" />
+      <input type="text" placeholder="Age" class="pet-input age-input" />
+    </div>
+    <div class="pet-breed-label">Breed:</div>
+    <input type="text" placeholder="Breed" class="pet-input breed-input" />
+    <input type="text" placeholder="ID" class="pet-input id-input" />
+    <button class="save-btn">Save</button>
+  `;
 
-      petsContainer.appendChild(card);
+const saveBtn = card.querySelector(".save-btn");
+saveBtn.addEventListener("click", () => {
+  const newPet = {
+    id: card.querySelector(".id-input").value.trim(),
+    name: card.querySelector(".name-input").value.trim(),
+    age: card.querySelector(".age-input").value.trim(),
+    breed: card.querySelector(".breed-input").value.trim()
+  };
+
+  const imageFile = card.querySelector("#petImageInput").files[0];
+  const formData = new FormData();
+  formData.append("data", JSON.stringify(newPet));
+  if (imageFile) formData.append("image", imageFile);
+
+  fetch("/api/pets", {
+    method: "POST",
+    body: formData
+  })
+    .then(res => res.json())
+    .then(data => {
+      if (data.success) {
+        alert("Pet added successfully!");
+        location.reload();
+      } else {
+        alert("Error: " + data.message);
+      }
+    })
+    .catch(err => {
+      console.error(err);
+      alert("Server error while adding pet.");
     });
+});
+
+
+  petsContainer.appendChild(card);
+});
+
   </script>
 </body>
 </html>

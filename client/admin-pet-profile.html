@@ -10,6 +10,7 @@
   <div class="pet-profile-container">
     <h1><input id="petName" class="pet-input" readonly /></h1>
     <img id="petImage" src="" alt="Pet Image" style="max-width: 200px;" />
+    
 
     <p><strong>ID:</strong> <span id="petID"></span></p>
     <p><strong>Age:</strong> <input id="petAge" class="pet-input" readonly /></p>
@@ -26,7 +27,10 @@
 
     <button id="editBtn">Edit</button>
     <button id="deleteBtn">Delete</button>
+    <button id="backBtn">Back to Dashboard</button>
   </div>
+
+  <div id="messageBox"></div>
 
   <script>
     const pet = JSON.parse(localStorage.getItem("selectedPet"));
@@ -42,6 +46,14 @@
       document.getElementById("petDescription").value = pet.description || "";
       document.getElementById("petInfoLink").value = pet.info || "";
       document.getElementById("petImage").src = pet.image || "";
+
+    }
+
+    function showMessage(text) {
+      const box = document.getElementById("messageBox");
+      box.textContent = text;
+      box.classList.add("show");
+      setTimeout(() => box.classList.remove("show"),3000);
     }
 
     fillFields(pet);
@@ -79,44 +91,50 @@
           if (!res.ok) throw new Error("Update failed");
           return res.json();
         })
-        .then(data => {
-          alert("Pet updated successfully.");
+.then(data => {
           localStorage.setItem("selectedPet", JSON.stringify(updatedPet));
-          location.reload(); // ריענון להצגת השינויים
+          showMessage("Pet updated successfully!");
+          location.reload();
         })
         .catch(err => {
           console.error(err);
-          alert("Error updating pet.");
+          showMessage("Error updating pet.");
         });
       }
     });
 
     document.getElementById("deleteBtn").addEventListener("click", () => {
-  if (!pet || !pet.id) {
-    alert("Cannot delete: missing pet ID.");
-    return;
-  }
-
-  const confirmDelete = confirm("Are you sure you want to delete this pet?");
-  if (!confirmDelete) return;
-
-  fetch(`/api/pets/${pet.id}`, {
-    method: "DELETE",
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Pet deleted successfully.");
-        window.location.href = "admin-dashboard.html";
-      } else {
-        alert("Failed to delete pet.");
+      if (!pet || !pet.id) {
+        showMessage("Cannot delete: missing pet ID.");
+        return;
       }
-    })
-    .catch(err => {
-      console.error("Error deleting pet:", err);
-      alert("Server error while deleting pet.");
+
+      const confirmDelete = confirm("Are you sure you want to delete this pet?");
+      if (!confirmDelete) return;
+
+      fetch(`/api/pets/${pet.id}`, {
+        method: "DELETE",
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            showMessage("Pet deleted successfully.");
+            setTimeout(() => {
+              window.location.href = "admin-dashboard.html";
+            }, 1000);
+          } else {
+            showMessage("Failed to delete pet.");
+          }
+        })
+        .catch(err => {
+          console.error("Error deleting pet:", err);
+          showMessage("Server error while deleting pet.");
+        });
     });
-});
+
+    document.getElementById("backBtn").addEventListener("click", () => {
+      window.location.href = "admin-dashboard.html";
+    });
   </script>
 </body>
 </html>
