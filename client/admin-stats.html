@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Dashboard</title>
+  <link href="https://fonts.googleapis.com/css2?family=Jersey+25&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+<body>
+  <div class="admin-stats-container">
+    <h1>📊 System Overview</h1>
+
+    <div class="stats-grid">
+      <div class="stat-card">
+        <div class="stat-title">🐾 Total animals available</div>
+        <div class="stat-value" id="totalPets">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">🏠 Successful adoptions</div>
+        <div class="stat-value" id="successfulAdoptions">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">👤 Total registered users</div>
+        <div class="stat-value" id="totalUsers">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">🕓 Pending adoption requests</div>
+        <div class="stat-value" id="pendingRequests">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">🌟 Most adopted breed</div>
+        <div class="stat-value" id="mostAdoptedBreed">--</div>
+      </div>
+      <div class="stat-card">
+        <div class="stat-title">💰 Total donations received</div>
+        <div class="stat-value" id="totalDonations">--</div>
+      </div>
+    </div>
+
+    <div id="chartContainer">
+      <h2>📈 Adoptions per month</h2>
+      <canvas id="adoptionChart" height="150"></canvas>
+    </div>
+  </div>
+
+  <script src="js/stats.js"></script>
+</body>
+</html>
