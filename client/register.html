@@ -34,40 +34,40 @@
     </div>
   </div>
 
-  <!-- סקריפט שמירת השם ומעבר -->
   <script>
     document.getElementById("register-btn").addEventListener("click", function (e) {
       e.preventDefault();
 
-      const firstName = document.getElementById("firstNameInput").value;
+      const inputs = document.getElementsByClassName("input");
+      const firstName = inputs[0].value.trim();
+      const phone = inputs[2].value.trim();
+      const password = inputs[3].value.trim();
 
-      if (firstName.trim() !== "") {
-        localStorage.setItem("userFirstName", firstName);
-        window.location.href = "questions.html";
-      } else {
-        alert("Please enter your first name.");
+      if (!firstName || !phone || !password) {
+        alert("Please fill in all required fields.");
+        return;
       }
+
+      fetch("/api/register", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ firstName, phone, password })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            localStorage.setItem("userFirstName", firstName);
+            localStorage.setItem("clientName", firstName);
+            window.location.href = "questions.html";
+          } else {
+            alert("Registration failed: " + data.message);
+          }
+        })
+        .catch(err => {
+          console.error("Registration error:", err);
+          alert("Server error");
+        });
     });
   </script>
 </body>
 </html>
-
-
-  <!-- סקריפט שמירת השם ומעבר -->
-  <script>
-    document.getElementById("register-btn").addEventListener("click", function (e) {
-      e.preventDefault();
-
-      const firstName = document.getElementById("firstNameInput").value;
-
-      if (firstName.trim() !== "") {
-        localStorage.setItem("userFirstName", firstName);
-        window.location.href = "questions.html";
-      } else {
-        alert("Please enter your first name.");
-      }
-    });
-  </script>
-</body>
-</html>
-

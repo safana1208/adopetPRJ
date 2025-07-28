@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>My Profile</title>
+  <link rel="stylesheet" href="css/style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Sansita+One&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="container">
+    <h1>Welcome, <span id="clientName"></span>!</h1>
+
+    <div class="adoption-requests">
+      <h2>My Adoption Requests</h2>
+      <div id="requestsContainer"></div>
+    </div>
+  </div>
+
+  <script>
+    const clientName = localStorage.getItem("userFirstName") || "User";
+    document.getElementById("clientName").textContent = clientName;
+
+    fetch("/api/requests")
+      .then(res => res.json())
+      .then(allRequests => {
+        const myRequests = allRequests.filter(r => r.applicantName === clientName);
+        const container = document.getElementById("requestsContainer");
+
+        if (myRequests.length === 0) {
+          container.innerHTML = "<p>No adoption requests found.</p>";
+          return;
+        }
+
+        myRequests.forEach(req => {
+          const card = document.createElement("div");
+          card.className = "request-card";
+          card.innerHTML = `
+            <p><strong>Pet ID:</strong> ${req.petId}</p>
+            <p><strong>Status:</strong> ${req.status}</p>
+            <p><strong>Date:</strong> ${req.date}</p>
+          `;
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error("Error loading requests:", err);
+        document.getElementById("requestsContainer").innerHTML = "<p>Error loading adoption requests.</p>";
+      });
+  </script>
+</body>
+</html>

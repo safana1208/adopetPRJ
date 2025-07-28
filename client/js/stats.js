@@ -10,8 +10,8 @@ fetch("/api/stats")
     document.getElementById("totalDonations").textContent = data.totalDonations + " ₪";
 
     // עיבוד גרף אימוצים לפי חודשים
-  const labels = data.monthlyAdoptions.map(m => m.month);
-  const values = data.monthlyAdoptions.map(m => m.count);
+    const labels = Object.keys(data.adoptionsPerMonth).sort();
+    const values = labels.map(label => data.adoptionsPerMonth[label]);
 
     new Chart(document.getElementById("adoptionChart"), {
       type: "bar",
@@ -29,7 +29,7 @@ fetch("/api/stats")
           y: {
             beginAtZero: true,
             ticks: {
-              precision:0
+              precision: 0
             }
           }
         }

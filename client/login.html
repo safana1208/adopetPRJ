@@ -50,6 +50,7 @@
             window.location.href = "admin-dashboard.html";
           } else {
             localStorage.setItem("userFirstName", data.firstName || "User");
+            localStorage.setItem("clientName", data.firstName || "User");
             window.location.href = "questions.html";
           }
         } else {

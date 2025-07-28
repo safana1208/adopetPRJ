@@ -1,0 +1,16 @@
+[
+  {
+    "id": "REQ001",
+    "applicantName": "Lina",
+    "petId": "PET123",
+    "date": "2025-07-10",
+    "status": "pending"
+  },
+  {
+    "id": "REQ002",
+    "applicantName": "Adam",
+    "petId": "PET124",
+    "date": "2025-07-09",
+    "status": "pending"
+  }
+]

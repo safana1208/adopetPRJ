@@ -1,9 +1,10 @@
 const express = require("express");
-const fs = require("fs");
 const path = require("path");
 const router = express.Router();
 const multer = require("multer");
+const Pet = require("../models/pet"); // טעינת המודל של החיה
 
+// הגדרות Multer לשמירת תמונות
 const storage = multer.diskStorage({
   destination: function (req, file, cb) {
     cb(null, path.join(__dirname, "../uploads"));
@@ -14,35 +15,28 @@ const storage = multer.diskStorage({
     cb(null, uniqueSuffix + extension);
   }
 });
-
 const upload = multer({ storage: storage });
 
-const petsFilePath = path.join(__dirname, "../data/pets.json");
-
 // שליפת כל החיות
-router.get("/pets", (req, res) => {
+router.get("/pets", async (req, res) => {
   try {
-    const pets = JSON.parse(fs.readFileSync(petsFilePath));
+    const pets = await Pet.find();
     res.json(pets);
   } catch (err) {
-    res.status(500).json({ success: false, message: "Failed to read pets data." });
+    res.status(500).json({ success: false, message: "Failed to fetch pets from DB." });
   }
 });
 
 // מחיקת חיה לפי ID
-router.delete("/pets/:id", (req, res) => {
+router.delete("/pets/:id", async (req, res) => {
   const petId = req.params.id;
-
   try {
-    const pets = JSON.parse(fs.readFileSync(petsFilePath));
-    const index = pets.findIndex(p => p.id === petId);
+    const result = await Pet.deleteOne({ id: petId });
 
-    if (index === -1) {
+    if (result.deletedCount === 0) {
       return res.status(404).json({ success: false, message: "Pet not found" });
     }
 
-    pets.splice(index, 1);
-    fs.writeFileSync(petsFilePath, JSON.stringify(pets, null, 2));
     res.json({ success: true, message: "Pet deleted successfully" });
   } catch (err) {
     res.status(500).json({ success: false, message: "Server error" });
@@ -50,39 +44,34 @@ router.delete("/pets/:id", (req, res) => {
 });
 
 // עדכון חיה לפי ID
-router.put("/pets/:id", (req, res) => {
+router.put("/pets/:id", async (req, res) => {
   const petId = req.params.id;
   const updatedData = req.body;
 
   try {
-    const pets = JSON.parse(fs.readFileSync(petsFilePath));
-    const index = pets.findIndex(p => p.id === petId);
+    const updatedPet = await Pet.findOneAndUpdate({ id: petId }, updatedData, { new: true });
 
-    if (index === -1) {
+    if (!updatedPet) {
       return res.status(404).json({ success: false, message: "Pet not found" });
     }
 
-    // עדכון הנתונים
-    pets[index] = { ...pets[index], ...updatedData };
-    fs.writeFileSync(petsFilePath, JSON.stringify(pets, null, 2));
-
-    res.json({ success: true, message: "Pet updated successfully", pet: pets[index] });
+    res.json({ success: true, message: "Pet updated successfully", pet: updatedPet });
   } catch (err) {
     console.error("Error updating pet:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
-  });
+});
 
-  // הוספת חיה חדשה
- router.post("/pets", upload.single("image"), (req, res) => {
+// הוספת חיה חדשה
+router.post("/pets", upload.single("image"), async (req, res) => {
   const newPet = JSON.parse(req.body.data);
   if (!newPet.id || !newPet.name) {
     return res.status(400).json({ success: false, message: "Missing pet ID or name" });
   }
 
   try {
-    const pets = JSON.parse(fs.readFileSync(petsFilePath));
-    if (pets.find(p => p.id === newPet.id)) {
+    const existing = await Pet.findOne({ id: newPet.id });
+    if (existing) {
       return res.status(409).json({ success: false, message: "Pet ID already exists" });
     }
 
@@ -90,9 +79,10 @@ router.put("/pets/:id", (req, res) => {
       newPet.image = `/uploads/${req.file.filename}`;
     }
 
-    pets.push(newPet);
-    fs.writeFileSync(petsFilePath, JSON.stringify(pets, null, 2));
-    res.status(201).json({ success: true, message: "Pet added successfully", pet: newPet });
+    const pet = new Pet(newPet);
+    await pet.save();
+
+    res.status(201).json({ success: true, message: "Pet added successfully", pet });
   } catch (err) {
     res.status(500).json({ success: false, message: "Server error" });
   }

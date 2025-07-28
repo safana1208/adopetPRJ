@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Adoption Requests</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+     <div class="admin-nav">
+  <button onclick="window.location.href='admin-dashboard.html'">Pets</button>
+  <button onclick="window.location.href='admin-stats.html'">Stats</button>
+  <button onclick="window.location.href='admin-requests.html'">Requests</button>
+</div>
+  <div class="admin-requests-container">
+    <h1>📄 Adoption Requests</h1>
+    <table>
+      <thead>
+        <tr>
+          <th>Applicant</th>
+          <th>Pet ID</th>
+          <th>Requested At</th>
+          <th>Status</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody id="requestsTableBody">
+        <!-- rows will be inserted dynamically -->
+      </tbody>
+    </table>
+    <p id="noRequestsMsg" style="text-align: center; margin-top: 20px;"></p>
+  </div>
+
+  <script>
+    fetch("/api/requests")
+      .then(res => res.json())
+      .then(data => {
+        const tbody = document.getElementById("requestsTableBody");
+        const noMsg = document.getElementById("noRequestsMsg");
+
+        if (!data || data.length === 0) {
+          noMsg.textContent = "No adoption requests found.";
+          return;
+        }
+
+        data.forEach(req => {
+            console.log("Request ID:", req.id);
+
+          const row = document.createElement("tr");
+
+          row.innerHTML = `
+            <td>${req.applicantName}</td>
+            <td><a href="admin-pet-profile.html?id=${req.petId}" target="_blank">${req.petId}</a></td>
+            <td>${req.date}</td>
+            <td>${req.status}</td>
+            <td>
+              <button onclick="updateStatus('${req.id}', 'approved')">✅ Approve</button>
+              <button onclick="updateStatus('${req.id}', 'declined')">❌ Decline</button>
+            </td>
+          `;
+
+          tbody.appendChild(row);
+        });
+      })
+      .catch(err => {
+        console.error("Error loading requests:", err);
+        document.getElementById("noRequestsMsg").textContent = "Error loading adoption requests.";
+      });
+
+    function updateStatus(id, status) {
+      fetch(`/api/requests/${id}/status`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status })
+      })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("Request updated successfully");
+            location.reload();
+          } else {
+            alert("Failed to update request");
+          }
+        })
+        .catch(err => {
+          console.error("Status update error:", err);
+          alert("Error updating request");
+        });
+    }
+  </script>
+</body>
+</html>

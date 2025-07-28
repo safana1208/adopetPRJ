@@ -60,13 +60,37 @@
       margin-top: 30px;
       align-self: flex-end;
     }
+
+    .show-all-btn {
+    background-color: #0A6B72;
+    color: white;
+    font-size: 18px;
+    padding: 12px 24px;
+    border: none;
+    border-radius: 10px;
+    font-family: 'Sansita One', sans-serif;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    }
+
+    .show-all-btn:hover {
+     background-color: #084f55;
+    }
+
   </style>
 </head>
 <body>
   <div class="greeting">Hey <span id="userName">Name</span>💖</div>
   <div class="title">Pet Recommendation Questionnaire 🐾</div>
+  <button onclick="window.location.href='client-profile.html'">See My Adoption Requests</button>
 
   <form class="questionnaire-form">
+    <div style="text-align: center; margin-top: 30px;">
+    <button class="show-all-btn" onclick="window.location.href='pets.html'">
+    🐾 Show All Pets
+   </button>
+    </div>
+
     <div>
       <p>What type of pet are you looking for?</p>
       <label><input type="radio" name="type" value="dog"> Dog</label>
@@ -102,6 +126,7 @@
     </div>
 
     <button type="submit" class="arrow-btn">➜</button>
+    
   </form>
 
   <script>
