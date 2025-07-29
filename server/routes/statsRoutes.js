@@ -30,11 +30,11 @@ router.get("/", async (req, res) => {
       }
     });
 
-    // גזע נפוץ לפי petId
+    // גזע נפוץ לפי petId — רק אם החיה עדיין קיימת במסד הנתונים
     const breedCount = {};
     for (const r of requests) {
       if (r.status === "approved") {
-        const pet = pets.find(p => p.id === r.petId.replace("PET", ""));
+        const pet = pets.find(p => p.id === r.petId);
         if (pet && pet.breed) {
           breedCount[pet.breed] = (breedCount[pet.breed] || 0) + 1;
         }
@@ -62,4 +62,3 @@ router.get("/", async (req, res) => {
 });
 
 module.exports = router;
-
