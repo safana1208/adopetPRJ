@@ -4,6 +4,7 @@ const requestSchema = new mongoose.Schema({
   id: String,
   applicantName: String,
   petId: String,
+  breed: String,
   date: String,
   status: String,
   reason: String,

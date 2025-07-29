@@ -33,13 +33,11 @@ router.get("/", async (req, res) => {
     // גזע נפוץ לפי petId — רק אם החיה עדיין קיימת במסד הנתונים
     const breedCount = {};
     for (const r of requests) {
-      if (r.status === "approved") {
-        const pet = pets.find(p => p.id === r.petId);
-        if (pet && pet.breed) {
-          breedCount[pet.breed] = (breedCount[pet.breed] || 0) + 1;
-        }
-      }
+    if (r.status === "approved" && r.breed) {
+    breedCount[r.breed] = (breedCount[r.breed] || 0) + 1;
     }
+    }
+
 
     const mostAdoptedBreed = Object.entries(breedCount).reduce(
       (a, b) => (a[1] > b[1] ? a : b),

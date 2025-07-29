@@ -30,7 +30,7 @@ router.get("/requests/:id", async (req, res) => {
   }
 });
 
-// ✅ עדכון סטטוס (Approve/Decline) כולל הסרה של חיה מהמערכת אם אושר
+//  עדכון סטטוס (Approve/Decline) כולל הסרה של חיה מהמערכת אם אושר
 router.post("/requests/:id/status", async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -61,6 +61,7 @@ router.post("/requests", async (req, res) => {
   const {
     applicantName,
     petId,
+    breed,
     date,
     reason,
     travelPlan,
@@ -76,6 +77,7 @@ router.post("/requests", async (req, res) => {
       id: `REQ${Date.now()}`,
       applicantName,
       petId,
+      breed,
       date,
       status: "pending",
       reason,
