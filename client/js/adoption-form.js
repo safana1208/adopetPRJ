@@ -43,3 +43,36 @@ document.getElementById("adoption-form").addEventListener("submit", async functi
     alert("Server error while submitting request.");
   }
 });
+// מצב צפייה לבקשת אימוץ קיימת
+window.addEventListener("DOMContentLoaded", async () => {
+  const requestId = new URLSearchParams(window.location.search).get("requestId");
+  if (!requestId) return;
+
+  // הסתרת כפתור שליחה
+  document.querySelector("button[type='submit']").style.display = "none";
+
+  try {
+    const res = await fetch(`/api/requests/${requestId}`);
+    const request = await res.json();
+
+    if (!request || !request.applicantName) {
+      alert("Failed to load adoption request.");
+      return;
+    }
+
+    // מילוי ערכים בטופס
+    document.getElementById("reason").value = request.reason;
+    document.getElementById("travelPlan").value = request.travelPlan;
+    document.querySelector(`input[name="experience"][value="${request.experience}"]`).checked = true;
+    document.querySelector(`input[name="hasPets"][value="${request.hasPets}"]`).checked = true;
+    document.getElementById("otherPets").value = request.otherPets || "";
+    document.querySelector(`input[name="homeType"][value="${request.homeType}"]`).checked = true;
+    document.getElementById("age").value = request.age;
+
+    // נעילת הטופס לעריכה
+    document.querySelectorAll("#adoption-form input").forEach(input => input.disabled = true);
+  } catch (err) {
+    console.error("Error loading request:", err);
+    alert("Error loading adoption request");
+  }
+});
