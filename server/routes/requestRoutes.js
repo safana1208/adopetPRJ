@@ -13,6 +13,22 @@ router.get("/requests", async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to load requests" });
   }
 });
+// בקשת אימוץ לפי ID (לשאלון של המנהל)
+router.get("/requests/:id", async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const request = await Request.findOne({ id });
+    if (!request) {
+      return res.status(404).json({ success: false, message: "Request not found" });
+    }
+    res.json(request);
+  } catch (err) {
+    console.error("Error fetching request by ID:", err);
+    res.status(500).json({ success: false, message: "Server error" });
+  }
+});
+
 
 // ✅ עדכון סטטוס (Approve/Decline) כולל הסרה של חיה מהמערכת אם אושר
 router.post("/requests/:id/status", async (req, res) => {
