@@ -17,7 +17,7 @@
       if you wanna know more about <a id="breed-link" href="#" target="_blank">breed</a>, click on the link
     </div>
 
-    <a href="adoption-form.html" class="adopt-button">
+    <a id="adopt-btn" href="#" class="adopt-button">
       Take me home!
       <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24">
         <path d="M12 2C11.45 2 11 2.45 11 3V17.59L5.7 12.29C5.31 11.9 4.68 11.9 4.29 12.29C3.9 12.68 3.9 13.31 4.29 13.7L11.3 20.71C11.69 21.1 12.32 21.1 12.71 20.71L19.71 13.7C20.1 13.31 20.1 12.68 19.71 12.29C19.32 11.9 18.69 11.9 18.3 12.29L13 17.59V3C13 2.45 12.55 2 12 2Z"/>
@@ -41,10 +41,10 @@
         document.getElementById("breed-link-box").style.display = "block";
       }
 
-      // ✅ עדכון כפתור האימוץ עם קישור ל־adoption-form עם ID
-      const adoptButton = document.querySelector(".adopt-button");
-      if (adoptButton && pet.id) {
-        adoptButton.href = `adoption-form.html?id=${pet.id}`;
+      //  עדכון קישור אימוץ עם ID של החיה
+      const adoptBtn = document.getElementById("adopt-btn");
+      if (adoptBtn && pet.id) {
+        adoptBtn.href = `adoption-form.html?id=${pet.id}`;
       }
     } else {
       document.querySelector(".container").innerHTML = "<p>Pet not found 😢</p>";
