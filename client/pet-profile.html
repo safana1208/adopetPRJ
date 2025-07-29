@@ -26,29 +26,42 @@
   </div>
 
   <script>
-    const pet = JSON.parse(localStorage.getItem("selectedPet"));
+  const pet = JSON.parse(localStorage.getItem("selectedPet"));
 
-    if (pet) {
-      document.getElementById("pet-image").src = pet.image;
-      document.getElementById("pet-name").textContent = pet.name;
-      document.getElementById("pet-age").textContent = pet.age;
-      document.getElementById("pet-description").textContent = pet.description;
+  if (!pet) {
+    document.querySelector(".container").innerHTML = "<p>Pet not found 😢</p>";
+  } else {
+    // נבדוק האם החיה עדיין קיימת במסד
+    fetch("/api/pets")
+      .then(res => res.json())
+      .then(pets => {
+        const match = pets.find(p => p.id === pet.id || p._id === pet.id); // בדיקה לפי id או _id
+        if (!match) {
+          document.querySelector(".container").innerHTML = "<p>This pet has already been adopted 🐾</p>";
+        } else {
+          document.getElementById("pet-image").src = pet.image;
+          document.getElementById("pet-name").textContent = pet.name;
+          document.getElementById("pet-age").textContent = pet.age;
+          document.getElementById("pet-description").textContent = pet.description;
 
-      if (pet.infoLink) {
-        const link = document.getElementById("breed-link");
-        link.href = pet.infoLink;
-        link.textContent = `"${pet.breed}"`;
-        document.getElementById("breed-link-box").style.display = "block";
-      }
+          if (pet.infoLink) {
+            const link = document.getElementById("breed-link");
+            link.href = pet.infoLink;
+            link.textContent = `"${pet.breed}"`;
+            document.getElementById("breed-link-box").style.display = "block";
+          }
 
-      //  עדכון קישור אימוץ עם ID של החיה
-      const adoptBtn = document.getElementById("adopt-btn");
-      if (adoptBtn && pet.id) {
-        adoptBtn.href = `adoption-form.html?id=${pet.id}`;
-      }
-    } else {
-      document.querySelector(".container").innerHTML = "<p>Pet not found 😢</p>";
-    }
-  </script>
+          const adoptButton = document.querySelector(".adopt-button");
+          if (adoptButton && pet.id) {
+            adoptButton.href = `adoption-form.html?id=${pet.id}`;
+          }
+        }
+      })
+      .catch(err => {
+        console.error("Error verifying pet existence:", err);
+        document.querySelector(".container").innerHTML = "<p>Server error. Please try again later.</p>";
+      });
+  }
+</script>
 </body>
 </html>

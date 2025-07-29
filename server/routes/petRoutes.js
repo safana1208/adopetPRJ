@@ -23,7 +23,7 @@ router.get("/pets", async (req, res) => {
     const pets = await Pet.find();
     res.json(pets);
   } catch (err) {
-    res.status(500).json({ success: false, message: "Failed to fetch pets from DB." });
+    res.status(500).json({ success: false });
   }
 });
 

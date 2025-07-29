@@ -10,9 +10,7 @@
   <h1 class="page-title">Available Pets 🐾</h1>
   <div class="grid" id="pet-container"></div>
 
-  <!-- טוען את המידע על החיות -->
- <script src="js/data.js"></script>
-
+  <!--  מטעין את החיות מהשרת (לא מ־data.js) -->
   <script>
     const container = document.getElementById("pet-container");
     const answers = JSON.parse(localStorage.getItem("questionnaireAnswers")) || {};
@@ -21,47 +19,49 @@
       const breedLower = pet.breed.toLowerCase();
       const nameLower = pet.name.toLowerCase();
 
-      // סוג חיה - אם "any" אז לא בודקים
       if (answers.type && answers.type !== "any" && answers.type !== pet.type) return false;
 
-      // גיל
       if (answers.age === "kitten" && !pet.age.includes("months")) return false;
       if (answers.age === "adult" && !(pet.age.includes("years") && parseInt(pet.age) < 6)) return false;
       if (answers.age === "senior" && !(pet.age.includes("years") && parseInt(pet.age) >= 6)) return false;
 
-      // גזע
       if (answers.breed === "specific" && answers.breedName) {
         if (!breedLower.includes(answers.breedName.toLowerCase())) return false;
       } else if (answers.breed === "mixed") {
         if (!breedLower.includes("mixed")) return false;
       }
 
-      // גודל – נוסיף כשיהיה בדאטה
-      // פרווה – כנ"ל
-
       return true;
     }
 
-    pets.filter(matchesFilter).forEach(pet => {
-      const card = document.createElement("div");
-      card.className = "pet-card";
-      card.innerHTML = `
-        <img src="${pet.image}" alt="${pet.name}">
-        <div class="pet-info-row">
-          <span class="pet-name">${pet.name}</span>
-          <span class="pet-age">${pet.age}</span>
-        </div>
-        <div class="pet-breed-label">Breed:</div>
-        <div class="pet-breed-box">${pet.breed}</div>
-      `;
+    fetch("/api/pets")
+      .then(res => res.json())
+      .then(pets => {
+        pets.filter(matchesFilter).forEach(pet => {
+          const card = document.createElement("div");
+          card.className = "pet-card";
+          card.innerHTML = `
+            <img src="${pet.image}" alt="${pet.name}">
+            <div class="pet-info-row">
+              <span class="pet-name">${pet.name}</span>
+              <span class="pet-age">${pet.age}</span>
+            </div>
+            <div class="pet-breed-label">Breed:</div>
+            <div class="pet-breed-box">${pet.breed}</div>
+          `;
 
-      card.addEventListener("click", () => {
-        localStorage.setItem("selectedPet", JSON.stringify(pet));
-        window.location.href = "pet-profile.html";
+          card.addEventListener("click", () => {
+            localStorage.setItem("selectedPet", JSON.stringify(pet));
+            window.location.href = "pet-profile.html";
+          });
+
+          container.appendChild(card);
+        });
+      })
+      .catch(err => {
+        console.error("Failed to load pets:", err);
+        container.innerHTML = "<p>Server error while loading pets 😢</p>";
       });
-
-      container.appendChild(card);
-    });
   </script>
 </body>
 </html>
