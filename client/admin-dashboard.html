@@ -32,7 +32,6 @@
     function displayPets(filteredPets) {
     petsContainer.innerHTML = "";
     filteredPets.forEach(pet => {
-    pet.id = pet._id; 
 
     const card = document.createElement("div");
     card.className = "pet-card";
