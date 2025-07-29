@@ -47,7 +47,6 @@
     `;
 
         card.addEventListener("click", () => {
-          pet.id = pet._id;
           localStorage.setItem("selectedPet", JSON.stringify(pet));
 
           window.location.href = "admin-pet-profile.html";
