@@ -78,7 +78,7 @@
       displayPets(filtered);
     });
 
-    // Add new pet (with info field)
+    // Add new pet (with info, type, size, shedding fields)
     addPetBtn.addEventListener("click", () => {
       const card = document.createElement("div");
       card.className = "pet-card";
@@ -95,6 +95,23 @@
         <input type="text" placeholder="Breed" class="pet-input breed-input" />
         <input type="text" placeholder="ID" class="pet-input id-input" />
         <input type="text" placeholder="More Info Link" class="pet-input info-input" />
+        <select class="pet-input type-input">
+          <option value="">Type</option>
+          <option value="Cat">Cat</option>
+          <option value="Dog">Dog</option>
+        </select>
+        <select class="pet-input size-input">
+          <option value="">Size</option>
+          <option value="Small">Small</option>
+          <option value="Medium">Medium</option>
+          <option value="Large">Large</option>
+        </select>
+        <select class="pet-input shedding-input">
+          <option value="">Shedding</option>
+          <option value="Low">Low</option>
+          <option value="Medium">Medium</option>
+          <option value="High">High</option>
+        </select>
         <button class="save-btn">Save</button>
       `;
 
@@ -105,7 +122,10 @@
           name: card.querySelector(".name-input").value.trim(),
           age: card.querySelector(".age-input").value.trim(),
           breed: card.querySelector(".breed-input").value.trim(),
-          infoLink: card.querySelector(".info-input").value.trim()
+          infoLink: card.querySelector(".info-input").value.trim(),
+          type: card.querySelector(".type-input").value,
+          size: card.querySelector(".size-input").value,
+          shedding: card.querySelector(".shedding-input").value
         };
 
         const imageFile = card.querySelector("#petImageInput").files[0];

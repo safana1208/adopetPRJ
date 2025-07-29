@@ -10,23 +10,31 @@
   <h1 class="page-title">Available Pets 🐾</h1>
   <div class="grid" id="pet-container"></div>
 
-  <!--  מטעין את החיות מהשרת (לא מ־data.js) -->
   <script>
     const container = document.getElementById("pet-container");
     const answers = JSON.parse(localStorage.getItem("questionnaireAnswers")) || {};
 
+    function normalize(str) {
+      return (str || "").toLowerCase().trim();
+    }
+
     function matchesFilter(pet) {
-      const breedLower = pet.breed.toLowerCase();
-      const nameLower = pet.name.toLowerCase();
+      const breedLower = normalize(pet.breed);
+      const nameLower = normalize(pet.name);
+      const typeLower = normalize(pet.type);
+      const ageText = normalize(pet.age);
 
-      if (answers.type && answers.type !== "any" && answers.type !== pet.type) return false;
+      // Filter by type
+      if (answers.type && answers.type !== "any" && normalize(answers.type) !== typeLower) return false;
 
-      if (answers.age === "kitten" && !pet.age.includes("months")) return false;
-      if (answers.age === "adult" && !(pet.age.includes("years") && parseInt(pet.age) < 6)) return false;
-      if (answers.age === "senior" && !(pet.age.includes("years") && parseInt(pet.age) >= 6)) return false;
+      // Filter by age
+      if (answers.age === "kitten" && !ageText.includes("month")) return false;
+      if (answers.age === "adult" && !(ageText.includes("year") && parseInt(ageText) < 6)) return false;
+      if (answers.age === "senior" && !(ageText.includes("year") && parseInt(ageText) >= 6)) return false;
 
+      // Filter by breed
       if (answers.breed === "specific" && answers.breedName) {
-        if (!breedLower.includes(answers.breedName.toLowerCase())) return false;
+        if (!breedLower.includes(normalize(answers.breedName))) return false;
       } else if (answers.breed === "mixed") {
         if (!breedLower.includes("mixed")) return false;
       }
