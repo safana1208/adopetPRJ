@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+<!DOCTYPE html> 
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
@@ -9,10 +9,11 @@
 </head>
 <body>
   <div class="admin-nav">
-  <button onclick="window.location.href='admin-dashboard.html'">Pets</button>
-  <button onclick="window.location.href='admin-stats.html'">Stats</button>
-  <button onclick="window.location.href='admin-requests.html'">Requests</button>
-</div>
+    <button onclick="window.location.href='admin-dashboard.html'">Pets</button>
+    <button onclick="window.location.href='admin-stats.html'">Stats</button>
+    <button onclick="window.location.href='admin-requests.html'">Requests</button>
+  </div>
+
   <div class="admin-top-bar">
     <div class="search-section">
       <input type="text" id="searchInput" placeholder="Search by ID">
@@ -30,27 +31,26 @@
     let pets = [];
 
     function displayPets(filteredPets) {
-    petsContainer.innerHTML = "";
-    filteredPets.forEach(pet => {
-
-    const card = document.createElement("div");
-    card.className = "pet-card";
-    card.innerHTML = `
-      <img src="${pet.image}" alt="${pet.name}">
-      <div class="pet-info-row">
-        <span class="pet-name">${pet.name}</span>
-        <span class="pet-age">${pet.age}</span>
-      </div>
-      <div class="pet-breed-label">Breed:</div>
-      <div class="pet-breed-box">${pet.breed}</div>
-      <div class="pet-id">ID: ${pet.id || "?"}</div>
-    `;
+      petsContainer.innerHTML = "";
+      filteredPets.forEach(pet => {
+        const card = document.createElement("div");
+        card.className = "pet-card";
+        card.innerHTML = `
+          <img src="${pet.image}" alt="${pet.name}">
+          <div class="pet-info-row">
+            <span class="pet-name">${pet.name}</span>
+            <span class="pet-age">${pet.age}</span>
+          </div>
+          <div class="pet-breed-label">Breed:</div>
+          <div class="pet-breed-box">${pet.breed}</div>
+          <div class="pet-id">ID: ${pet.id || "?"}</div>
+        `;
 
         card.addEventListener("click", () => {
           localStorage.setItem("selectedPet", JSON.stringify(pet));
-
           window.location.href = "admin-pet-profile.html";
         });
+
         petsContainer.appendChild(card);
       });
     }
@@ -78,62 +78,62 @@
       displayPets(filtered);
     });
 
-    // Add new pet (UI only – server integration not implemented here)
-addPetBtn.addEventListener("click", () => {
-  const card = document.createElement("div");
-  card.className = "pet-card";
+    // Add new pet (with info field)
+    addPetBtn.addEventListener("click", () => {
+      const card = document.createElement("div");
+      card.className = "pet-card";
 
-  card.innerHTML = `
-    <div class="image-upload-placeholder">
-      <input type="file" accept="image/*" id="petImageInput" />
-    </div>
-    <div class="pet-info-row">
-      <input type="text" placeholder="Name" class="pet-input name-input" />
-      <input type="text" placeholder="Age" class="pet-input age-input" />
-    </div>
-    <div class="pet-breed-label">Breed:</div>
-    <input type="text" placeholder="Breed" class="pet-input breed-input" />
-    <input type="text" placeholder="ID" class="pet-input id-input" />
-    <button class="save-btn">Save</button>
-  `;
+      card.innerHTML = `
+        <div class="image-upload-placeholder">
+          <input type="file" accept="image/*" id="petImageInput" />
+        </div>
+        <div class="pet-info-row">
+          <input type="text" placeholder="Name" class="pet-input name-input" />
+          <input type="text" placeholder="Age" class="pet-input age-input" />
+        </div>
+        <div class="pet-breed-label">Breed:</div>
+        <input type="text" placeholder="Breed" class="pet-input breed-input" />
+        <input type="text" placeholder="ID" class="pet-input id-input" />
+        <input type="text" placeholder="More Info Link" class="pet-input info-input" />
+        <button class="save-btn">Save</button>
+      `;
 
-const saveBtn = card.querySelector(".save-btn");
-saveBtn.addEventListener("click", () => {
-  const newPet = {
-    id: card.querySelector(".id-input").value.trim(),
-    name: card.querySelector(".name-input").value.trim(),
-    age: card.querySelector(".age-input").value.trim(),
-    breed: card.querySelector(".breed-input").value.trim()
-  };
+      const saveBtn = card.querySelector(".save-btn");
+      saveBtn.addEventListener("click", () => {
+        const newPet = {
+          id: card.querySelector(".id-input").value.trim(),
+          name: card.querySelector(".name-input").value.trim(),
+          age: card.querySelector(".age-input").value.trim(),
+          breed: card.querySelector(".breed-input").value.trim(),
+          info: card.querySelector(".info-input").value.trim()
+        };
 
-  const imageFile = card.querySelector("#petImageInput").files[0];
-  const formData = new FormData();
-  formData.append("data", JSON.stringify(newPet));
-  if (imageFile) formData.append("image", imageFile);
+        const imageFile = card.querySelector("#petImageInput").files[0];
+        const formData = new FormData();
+        formData.append("data", JSON.stringify(newPet));
+        if (imageFile) formData.append("image", imageFile);
 
-  fetch("/api/pets", {
-    method: "POST",
-    body: formData
-  })
-    .then(res => res.json())
-    .then(data => {
-      if (data.success) {
-        alert("Pet added successfully!");
-        location.reload();
-      } else {
-        alert("Error: " + data.message);
-      }
-    })
-    .catch(err => {
-      console.error(err);
-      alert("Server error while adding pet.");
+        fetch("/api/pets", {
+          method: "POST",
+          body: formData
+        })
+        .then(res => res.json())
+        .then(data => {
+          if (data.success) {
+            alert("Pet added successfully!");
+            location.reload();
+          } else {
+            alert("Error: " + data.message);
+          }
+        })
+        .catch(err => {
+          console.error(err);
+          alert("Server error while adding pet.");
+        });
+      });
+
+      petsContainer.appendChild(card);
     });
-});
-
-
-  petsContainer.appendChild(card);
-});
-
   </script>
 </body>
 </html>
