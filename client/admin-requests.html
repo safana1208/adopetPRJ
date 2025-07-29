@@ -32,39 +32,42 @@
 
   <script>
     fetch("/api/requests")
-      .then(res => res.json())
-      .then(data => {
-        const tbody = document.getElementById("requestsTableBody");
-        const noMsg = document.getElementById("noRequestsMsg");
+    .then(res => res.json())
+    .then(data => {
+    const tbody = document.getElementById("requestsTableBody");
+    const noMsg = document.getElementById("noRequestsMsg");
 
-        if (!data || data.length === 0) {
-          noMsg.textContent = "No adoption requests found.";
-          return;
-        }
+    tbody.innerHTML = "";
 
-        data.forEach(req => {
-            console.log("Request ID:", req.id);
+    if (!data || data.length === 0) {
+      noMsg.textContent = "No adoption requests found.";
+      return;
+    }
 
-          const row = document.createElement("tr");
+    data.forEach(req => {
+      console.log("Request:", req);
 
-          row.innerHTML = `
-            <td>${req.applicantName}</td>
-            <td><a href="admin-pet-profile.html?id=${req.petId}" target="_blank">${req.petId}</a></td>
-            <td>${req.date}</td>
-            <td>${req.status}</td>
-            <td>
-              <button onclick="updateStatus('${req.id}', 'approved')">✅ Approve</button>
-              <button onclick="updateStatus('${req.id}', 'declined')">❌ Decline</button>
-            </td>
-          `;
+      const row = document.createElement("tr");
 
-          tbody.appendChild(row);
-        });
-      })
-      .catch(err => {
-        console.error("Error loading requests:", err);
-        document.getElementById("noRequestsMsg").textContent = "Error loading adoption requests.";
-      });
+      row.innerHTML = `
+        <td>${req.applicantName || "-"}</td>
+        <td><a href="admin-pet-profile.html?id=${req.petId || ""}" target="_blank">${req.petId || "-"}</a></td>
+        <td>${req.date ? new Date(req.date).toLocaleDateString() : "-"}</td>
+        <td>${req.status || "pending"}</td>
+        <td>
+          <button onclick="updateStatus('${req.id}', 'approved')">✅ Approve</button>
+          <button onclick="updateStatus('${req.id}', 'declined')">❌ Decline</button>
+        </td>
+      `;
+
+      tbody.appendChild(row);
+    });
+  })
+  .catch(err => {
+    console.error("Error loading requests:", err);
+    document.getElementById("noRequestsMsg").textContent = "Error loading adoption requests.";
+  });
+
 
     function updateStatus(id, status) {
       fetch(`/api/requests/${id}/status`, {

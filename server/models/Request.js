@@ -5,7 +5,14 @@ const requestSchema = new mongoose.Schema({
   applicantName: String,
   petId: String,
   date: String,
-  status: String
+  status: String,
+  reason: String,
+  travelPlan: String,
+  experience: String,
+  hasPets: String,
+  otherPets: String,
+  homeType: String,
+  age: Number
 });
 
 module.exports = mongoose.model("Request", requestSchema);

@@ -25,7 +25,7 @@ const statsRoutes = require("./routes/statsRoutes");
 // שימוש בראוטים
 app.use("/api", authRoutes);
 app.use("/api", petRoutes);
-app.use("/api/requests", requestRoutes);
+app.use("/api", requestRoutes); // ✅ זו השורה שתוקנה
 app.use("/api/stats", statsRoutes);
 
 // הפעלת השרת
@@ -33,4 +33,3 @@ const PORT = 3000;
 app.listen(PORT, () => {
   console.log(`Server is running on http://localhost:${PORT}`);
 });
-

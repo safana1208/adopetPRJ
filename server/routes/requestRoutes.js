@@ -14,7 +14,7 @@ router.get("/requests", async (req, res) => {
   }
 });
 
-// עדכון סטטוס (Approve/Decline) כולל הסרה של חיה מהמערכת אם אושר
+// ✅ עדכון סטטוס (Approve/Decline) כולל הסרה של חיה מהמערכת אם אושר
 router.post("/requests/:id/status", async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
@@ -26,11 +26,9 @@ router.post("/requests/:id/status", async (req, res) => {
       return res.status(404).json({ success: false, message: "Request not found" });
     }
 
-    // עדכון הסטטוס של הבקשה
     request.status = status;
     await request.save();
 
-    // אם הסטטוס הוא approved – נמחק את החיה מה-DB
     if (status === "approved") {
       await Pet.deleteOne({ id: request.petId });
     }
@@ -42,6 +40,43 @@ router.post("/requests/:id/status", async (req, res) => {
   }
 });
 
+// ✅ יצירת בקשת אימוץ חדשה
+router.post("/requests", async (req, res) => {
+  const {
+    applicantName,
+    petId,
+    date,
+    reason,
+    travelPlan,
+    experience,
+    hasPets,
+    otherPets,
+    homeType,
+    age
+  } = req.body;
+
+  try {
+    const newRequest = new Request({
+      id: `REQ${Date.now()}`,
+      applicantName,
+      petId,
+      date,
+      status: "pending",
+      reason,
+      travelPlan,
+      experience,
+      hasPets,
+      otherPets,
+      homeType,
+      age
+    });
+
+    await newRequest.save();
+    res.status(201).json({ success: true, message: "Request submitted", request: newRequest });
+  } catch (err) {
+    console.error("Error creating request:", err);
+    res.status(500).json({ success: false, message: "Failed to create request" });
+  }
+});
+
 module.exports = router;
-
-
