@@ -30,22 +30,27 @@
     let pets = [];
 
     function displayPets(filteredPets) {
-      petsContainer.innerHTML = "";
-      filteredPets.forEach(pet => {
-        const card = document.createElement("div");
-        card.className = "pet-card";
-        card.innerHTML = `
-          <img src="${pet.image}" alt="${pet.name}">
-          <div class="pet-info-row">
-            <span class="pet-name">${pet.name}</span>
-            <span class="pet-age">${pet.age}</span>
-          </div>
-          <div class="pet-breed-label">Breed:</div>
-          <div class="pet-breed-box">${pet.breed}</div>
-          <div class="pet-id">ID: ${pet.id || "?"}</div>
-        `;
+    petsContainer.innerHTML = "";
+    filteredPets.forEach(pet => {
+    pet.id = pet._id; 
+
+    const card = document.createElement("div");
+    card.className = "pet-card";
+    card.innerHTML = `
+      <img src="${pet.image}" alt="${pet.name}">
+      <div class="pet-info-row">
+        <span class="pet-name">${pet.name}</span>
+        <span class="pet-age">${pet.age}</span>
+      </div>
+      <div class="pet-breed-label">Breed:</div>
+      <div class="pet-breed-box">${pet.breed}</div>
+      <div class="pet-id">ID: ${pet.id || "?"}</div>
+    `;
+
         card.addEventListener("click", () => {
+          pet.id = pet._id;
           localStorage.setItem("selectedPet", JSON.stringify(pet));
+
           window.location.href = "admin-pet-profile.html";
         });
         petsContainer.appendChild(card);
