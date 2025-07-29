@@ -1,21 +1,27 @@
 const express = require("express");
-const path = require("path");
 const router = express.Router();
 const multer = require("multer");
-const Pet = require("../models/pet"); // טעינת המודל של החיה
+const { CloudinaryStorage } = require("multer-storage-cloudinary");
+const cloudinary = require("cloudinary").v2;
+const Pet = require("../models/pet");
 
-// הגדרות Multer לשמירת תמונות
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    cb(null, path.join(__dirname, "../uploads"));
-  },
-  filename: function (req, file, cb) {
-    const uniqueSuffix = Date.now() + "-" + Math.round(Math.random() * 1E9);
-    const extension = path.extname(file.originalname);
-    cb(null, uniqueSuffix + extension);
+// הגדרות Cloudinary מתוך משתני סביבה
+cloudinary.config({
+  cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
+  api_key: process.env.CLOUDINARY_API_KEY,
+  api_secret: process.env.CLOUDINARY_API_SECRET
+});
+
+// אחסון ענן דרך multer
+const storage = new CloudinaryStorage({
+  cloudinary: cloudinary,
+  params: {
+    folder: "adopet_pets",
+    allowed_formats: ["jpg", "png", "jpeg"],
+    transformation: [{ width: 500, height: 500, crop: "limit" }]
   }
 });
-const upload = multer({ storage: storage });
+const upload = multer({ storage });
 
 // שליפת כל החיות
 router.get("/pets", async (req, res) => {
@@ -62,7 +68,7 @@ router.put("/pets/:id", async (req, res) => {
   }
 });
 
-// הוספת חיה חדשה
+// הוספת חיה חדשה עם תמונה ל־Cloudinary
 router.post("/pets", upload.single("image"), async (req, res) => {
   const newPet = JSON.parse(req.body.data);
   if (!newPet.id || !newPet.name) {
@@ -75,8 +81,8 @@ router.post("/pets", upload.single("image"), async (req, res) => {
       return res.status(409).json({ success: false, message: "Pet ID already exists" });
     }
 
-    if (req.file) {
-      newPet.image = `/uploads/${req.file.filename}`;
+    if (req.file && req.file.path) {
+      newPet.image = req.file.path; // קישור מלא מה־Cloudinary
     }
 
     const pet = new Pet(newPet);
@@ -84,6 +90,7 @@ router.post("/pets", upload.single("image"), async (req, res) => {
 
     res.status(201).json({ success: true, message: "Pet added successfully", pet });
   } catch (err) {
+    console.error("Error adding pet:", err);
     res.status(500).json({ success: false, message: "Server error" });
   }
 });
