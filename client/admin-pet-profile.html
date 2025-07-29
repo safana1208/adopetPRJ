@@ -7,15 +7,14 @@
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
-   <div class="admin-nav">
-  <button onclick="window.location.href='admin-dashboard.html'">Pets</button>
-  <button onclick="window.location.href='admin-stats.html'">Stats</button>
-  <button onclick="window.location.href='admin-requests.html'">Requests</button>
-</div>
+  <div class="admin-nav">
+    <button onclick="window.location.href='admin-dashboard.html'">Pets</button>
+    <button onclick="window.location.href='admin-stats.html'">Stats</button>
+    <button onclick="window.location.href='admin-requests.html'">Requests</button>
+  </div>
   <div class="pet-profile-container">
     <h1><input id="petName" class="pet-input" readonly /></h1>
     <img id="petImage" src="" alt="Pet Image" style="max-width: 200px;" />
-    
 
     <p><strong>ID:</strong> <span id="petID"></span></p>
     <p><strong>Age:</strong> <input id="petAge" class="pet-input" readonly /></p>
@@ -28,6 +27,7 @@
     </p>
     <p><strong>More Info:</strong> 
       <input id="petInfoLink" class="pet-input" readonly />
+      <p><a id="infoLinkAnchor" href="#" target="_blank" style="color: blue;">🔗 Click here for more info</a></p>
     </p>
 
     <button id="editBtn">Edit</button>
@@ -41,6 +41,14 @@
     const pet = JSON.parse(localStorage.getItem("selectedPet"));
 
     function fillFields(pet) {
+      const anchor = document.getElementById("infoLinkAnchor");
+      if (pet.infoLink) {
+        anchor.href = pet.infoLink;
+        anchor.style.display = "inline";
+      } else {
+        anchor.style.display = "none";
+      }
+
       document.getElementById("petName").value = pet.name || "";
       document.getElementById("petID").textContent = pet.id || "-";
       document.getElementById("petAge").value = pet.age || "";
@@ -49,31 +57,27 @@
       document.getElementById("petSize").value = pet.size || "";
       document.getElementById("petShedding").value = pet.shedding || "";
       document.getElementById("petDescription").value = pet.description || "";
-      document.getElementById("petInfoLink").value = pet.info || "";
+      document.getElementById("petInfoLink").value = pet.infoLink || "";
       document.getElementById("petImage").src = pet.image || "";
-
     }
 
     function showMessage(text) {
       const box = document.getElementById("messageBox");
       box.textContent = text;
       box.classList.add("show");
-      setTimeout(() => box.classList.remove("show"),3000);
+      setTimeout(() => box.classList.remove("show"), 3000);
     }
 
     fillFields(pet);
 
-    // מצב עריכה
     let isEditing = false;
 
     document.getElementById("editBtn").addEventListener("click", () => {
       if (!isEditing) {
-        // הפוך לשדות ניתנים לעריכה
         document.querySelectorAll(".pet-input").forEach(el => el.removeAttribute("readonly"));
         document.getElementById("editBtn").textContent = "Save";
         isEditing = true;
       } else {
-        // שלח לשרת עדכון
         const updatedPet = {
           id: pet.id,
           name: document.getElementById("petName").value,
@@ -83,7 +87,7 @@
           size: document.getElementById("petSize").value,
           shedding: document.getElementById("petShedding").value,
           description: document.getElementById("petDescription").value,
-          info: document.getElementById("petInfoLink").value,
+          infoLink: document.getElementById("petInfoLink").value,
           image: pet.image
         };
 
@@ -96,7 +100,7 @@
           if (!res.ok) throw new Error("Update failed");
           return res.json();
         })
-.then(data => {
+        .then(data => {
           localStorage.setItem("selectedPet", JSON.stringify(updatedPet));
           showMessage("Pet updated successfully!");
           location.reload();
@@ -120,21 +124,21 @@
       fetch(`/api/pets/${pet.id}`, {
         method: "DELETE",
       })
-        .then(res => res.json())
-        .then(data => {
-          if (data.success) {
-            showMessage("Pet deleted successfully.");
-            setTimeout(() => {
-              window.location.href = "admin-dashboard.html";
-            }, 1000);
-          } else {
-            showMessage("Failed to delete pet.");
-          }
-        })
-        .catch(err => {
-          console.error("Error deleting pet:", err);
-          showMessage("Server error while deleting pet.");
-        });
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          showMessage("Pet deleted successfully.");
+          setTimeout(() => {
+            window.location.href = "admin-dashboard.html";
+          }, 1000);
+        } else {
+          showMessage("Failed to delete pet.");
+        }
+      })
+      .catch(err => {
+        console.error("Error deleting pet:", err);
+        showMessage("Server error while deleting pet.");
+      });
     });
 
     document.getElementById("backBtn").addEventListener("click", () => {
