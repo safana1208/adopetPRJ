@@ -40,6 +40,12 @@
         link.textContent = `"${pet.breed}"`;
         document.getElementById("breed-link-box").style.display = "block";
       }
+
+      // ✅ עדכון כפתור האימוץ עם קישור ל־adoption-form עם ID
+      const adoptButton = document.querySelector(".adopt-button");
+      if (adoptButton && pet.id) {
+        adoptButton.href = `adoption-form.html?id=${pet.id}`;
+      }
     } else {
       document.querySelector(".container").innerHTML = "<p>Pet not found 😢</p>";
     }
