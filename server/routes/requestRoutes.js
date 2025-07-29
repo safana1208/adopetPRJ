@@ -13,6 +13,7 @@ router.get("/requests", async (req, res) => {
     res.status(500).json({ success: false, message: "Failed to load requests" });
   }
 });
+
 // בקשת אימוץ לפי ID (לשאלון של המנהל)
 router.get("/requests/:id", async (req, res) => {
   const { id } = req.params;
@@ -29,7 +30,6 @@ router.get("/requests/:id", async (req, res) => {
   }
 });
 
-
 // ✅ עדכון סטטוס (Approve/Decline) כולל הסרה של חיה מהמערכת אם אושר
 router.post("/requests/:id/status", async (req, res) => {
   const { id } = req.params;
@@ -43,10 +43,10 @@ router.post("/requests/:id/status", async (req, res) => {
     }
 
     request.status = status;
-    await request.save();
+    await request.save(); // שומר את השינוי בסטטוס
 
     if (status === "approved") {
-      await Pet.deleteOne({ id: request.petId });
+      await Pet.deleteOne({ id: request.petId }); // מוחק את החיה אם אושר
     }
 
     res.json({ success: true });
