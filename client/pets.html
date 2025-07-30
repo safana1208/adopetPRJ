@@ -23,6 +23,8 @@
       const nameLower = normalize(pet.name);
       const typeLower = normalize(pet.type);
       const ageText = normalize(pet.age);
+      const sizeLower = normalize(pet.size);
+      const furLower = normalize(pet.shedding);
 
       // Filter by type
       if (answers.type && answers.type !== "any" && normalize(answers.type) !== typeLower) return false;
@@ -38,6 +40,12 @@
       } else if (answers.breed === "mixed") {
         if (!breedLower.includes("mixed")) return false;
       }
+
+      // Filter by size
+      if (answers.size && normalize(answers.size) !== sizeLower) return false;
+
+      // Filter by fur
+      if (answers.fur && answers.fur !== "dont-mind" && normalize(answers.fur) !== furLower) return false;
 
       return true;
     }

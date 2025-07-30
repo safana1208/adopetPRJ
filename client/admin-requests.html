@@ -47,6 +47,7 @@
 
         data.forEach(req => {
           const row = document.createElement("tr");
+          row.setAttribute("data-petid", req.petId); // Add this line
 
           row.innerHTML = `
             <td><a href="adoption-form.html?requestId=${req.id}" target="_blank">${req.applicantName || "-"}</a></td>
@@ -54,8 +55,8 @@
             <td>${req.date ? new Date(req.date).toLocaleDateString() : "-"}</td>
             <td>${req.status || "pending"}</td>
             <td>
-              <button onclick="updateStatus('${req.id}', 'approved')">✅ Approve</button>
-              <button onclick="updateStatus('${req.id}', 'declined')">❌ Decline</button>
+              <button onclick="updateStatus('${req.id}', 'approved', '${req.petId}')">✅ Approve</button>
+              <button onclick="updateStatus('${req.id}', 'declined', '${req.petId}')">❌ Decline</button>
             </td>
           `;
 
@@ -67,7 +68,7 @@
         document.getElementById("noRequestsMsg").textContent = "Error loading adoption requests.";
       });
 
-    function updateStatus(id, status) {
+    function updateStatus(id, status, petId) {
       fetch(`/api/requests/${id}/status`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -77,7 +78,17 @@
         .then(data => {
           if (data.success) {
             alert("Request updated successfully");
-            location.reload();
+            if (status === "approved") {
+              // Remove all rows for this pet (approved and declined)
+              document.querySelectorAll(`tr[data-petid="${petId}"]`).forEach(row => row.remove());
+            } else {
+              // Remove only the declined row
+              const btn = document.querySelector(`button[onclick="updateStatus('${id}', '${status}', '${petId}')"]`);
+              if (btn) {
+                const row = btn.closest("tr");
+                if (row) row.remove();
+              }
+            }
           } else {
             alert("Failed to update request");
           }

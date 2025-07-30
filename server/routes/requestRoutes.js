@@ -34,26 +34,28 @@ router.get("/requests/:id", async (req, res) => {
 router.post("/requests/:id/status", async (req, res) => {
   const { id } = req.params;
   const { status } = req.body;
+  const request = await Request.findOne({ id });
+  if (!request) return res.status(404).json({ success: false, message: "Request not found" });
 
-  try {
-    const request = await Request.findOne({ id });
-
-    if (!request) {
-      return res.status(404).json({ success: false, message: "Request not found" });
+  if (status === "approved") {
+    // Only approve if no other request for this pet is approved
+    const alreadyApproved = await Request.findOne({ petId: request.petId, status: "approved" });
+    if (alreadyApproved) {
+      return res.status(400).json({ success: false, message: "This pet is already adopted." });
     }
 
-    request.status = status;
-    await request.save(); // שומר את השינוי בסטטוס
+    // Decline all other requests for this pet
+    await Request.updateMany(
+      { petId: request.petId, id: { $ne: request.id } },
+      { $set: { status: "declined" } }
+    );
 
-    if (status === "approved") {
-      await Pet.deleteOne({ id: request.petId }); // מוחק את החיה אם אושר
-    }
-
-    res.json({ success: true });
-  } catch (err) {
-    console.error("Error updating request status:", err);
-    res.status(500).json({ success: false, message: "Failed to update request" });
+    await Pet.deleteOne({ id: request.petId }); // מוחק את החיה אם אושר
   }
+
+  request.status = status;
+  await request.save();
+  return res.json({ success: true });
 });
 
 // ✅ יצירת בקשת אימוץ חדשה

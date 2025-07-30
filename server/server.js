@@ -21,11 +21,13 @@ const authRoutes = require("./routes/authRoutes");
 const petRoutes = require("./routes/petRoutes");
 const requestRoutes = require("./routes/requestRoutes");
 const statsRoutes = require("./routes/statsRoutes");
+const donationRoutes = require("./routes/donationRoutes");
 
 // שימוש בראוטים
 app.use("/api", authRoutes);
 app.use("/api", petRoutes);
 app.use("/api", requestRoutes); // ✅ זו השורה שתוקנה
+app.use("/api", donationRoutes);
 app.use("/api/stats", statsRoutes);
 
 // הפעלת השרת

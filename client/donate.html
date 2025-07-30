@@ -69,11 +69,48 @@
   const form = document.querySelector("form");
 
   form.addEventListener("submit", function (e) {
-    e.preventDefault(); // מונע רענון הדף
+    e.preventDefault();
 
-    // אפשר להוסיף כאן ולידציה אם רוצים בעתיד
-    window.location.href = "donation-thankyou.html";
+    // Get selected amount
+    let amount = form.amount.value;
+    if (amount === "other") {
+      amount = prompt("Enter donation amount:");
+    }
+    amount = parseFloat(amount);
+
+    const name = form.fullname.value.trim();
+
+    if (!name || !amount || isNaN(amount)) {
+      alert("Please enter your name and a valid amount.");
+      return;
+    }
+
+    fetch("/api/donations", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ name, amount })
+    })
+      .then(res => res.json())
+      .then(data => {
+        if (data.success) {
+          window.location.href = "donation-thankyou.html";
+        } else {
+          alert("Donation failed: " + data.message);
+        }
+      })
+      .catch(() => {
+        alert("Server error");
+      });
   });
+
+  // const form = document.querySelector("form");
+
+  // form.addEventListener("submit", function (e) {
+  //   e.preventDefault(); // מונע רענון הדף
+
+  //   // אפשר להוסיף כאן ולידציה אם רוצים בעתיד
+  //   window.location.href = "donation-thankyou.html";
+  // });
 </script>
 
 </body>
