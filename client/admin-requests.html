@@ -45,9 +45,11 @@
           return;
         }
 
-        data.forEach(req => {
+        data
+        .filter(req => req.status === "pending") // Only show pending requests
+        .forEach(req => {
           const row = document.createElement("tr");
-          row.setAttribute("data-petid", req.petId); // Add this line
+          row.setAttribute("data-petid", req.petId);
 
           row.innerHTML = `
             <td><a href="adoption-form.html?requestId=${req.id}" target="_blank">${req.applicantName || "-"}</a></td>
