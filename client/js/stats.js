@@ -6,7 +6,6 @@ fetch("/api/stats")
     document.getElementById("successfulAdoptions").textContent = data.successfulAdoptions;
     document.getElementById("totalUsers").textContent = data.totalUsers;
     document.getElementById("pendingRequests").textContent = data.pendingRequests;
-    document.getElementById("mostAdoptedBreed").textContent = data.mostAdoptedBreed;
     document.getElementById("totalDonations").textContent = data.totalDonations + " ₪";
 
     // עיבוד גרף אימוצים לפי חודשים
