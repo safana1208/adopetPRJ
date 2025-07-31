@@ -1,3 +1,5 @@
+const BASE_URL = "https://adopet-server.onrender.com"; // 🟢 הוספנו את כתובת השרת
+
 document.getElementById("adoption-form").addEventListener("submit", async function (e) {
   e.preventDefault();
 
@@ -17,13 +19,13 @@ document.getElementById("adoption-form").addEventListener("submit", async functi
     hasPets: data.hasPets,
     otherPets: data.otherPets || "",
     homeType: data.homeType,
-    age: parseInt(data.age) // ⚠️ לוודא שזה מספר
+    age: parseInt(data.age)
   };
 
   console.log("📤 Sending request data:", requestData);
 
   try {
-    const res = await fetch("/api/requests", {
+    const res = await fetch(`${BASE_URL}/api/requests`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(requestData)
@@ -43,16 +45,15 @@ document.getElementById("adoption-form").addEventListener("submit", async functi
     alert("Server error while submitting request.");
   }
 });
-// מצב צפייה לבקשת אימוץ קיימת
+
 window.addEventListener("DOMContentLoaded", async () => {
   const requestId = new URLSearchParams(window.location.search).get("requestId");
   if (!requestId) return;
 
-  // הסתרת כפתור שליחה
   document.querySelector("button[type='submit']").style.display = "none";
 
   try {
-    const res = await fetch(`/api/requests/${requestId}`);
+    const res = await fetch(`${BASE_URL}/api/requests/${requestId}`);
     const request = await res.json();
 
     if (!request || !request.applicantName) {
@@ -60,7 +61,6 @@ window.addEventListener("DOMContentLoaded", async () => {
       return;
     }
 
-    // מילוי ערכים בטופס
     document.getElementById("reason").value = request.reason;
     document.getElementById("travelPlan").value = request.travelPlan;
     document.querySelector(`input[name="experience"][value="${request.experience}"]`).checked = true;
@@ -69,10 +69,10 @@ window.addEventListener("DOMContentLoaded", async () => {
     document.querySelector(`input[name="homeType"][value="${request.homeType}"]`).checked = true;
     document.getElementById("age").value = request.age;
 
-    // נעילת הטופס לעריכה
     document.querySelectorAll("#adoption-form input").forEach(input => input.disabled = true);
   } catch (err) {
     console.error("Error loading request:", err);
     alert("Error loading adoption request");
   }
 });
+

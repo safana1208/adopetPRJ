@@ -1,4 +1,6 @@
-fetch("/api/stats")
+const BASE_URL = "https://adopet-server.onrender.com";
+
+fetch(`${BASE_URL}/api/stats`)
   .then(res => res.json())
   .then(data => {
     // הכנסת נתונים לתוך ה־DOM

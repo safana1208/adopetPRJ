@@ -1,4 +1,6 @@
-fetch("/api/requests")
+const BASE_URL = "https://adopet-server.onrender.com";
+
+fetch(`${BASE_URL}/api/requests`)
   .then(res => res.json())
   .then(requests => {
     const tbody = document.getElementById("requestsTableBody");
@@ -8,7 +10,7 @@ fetch("/api/requests")
       const tr = document.createElement("tr");
 
       tr.innerHTML = `
-        <td>${req.applicantName}</td>
+        <td><a href="adoption-form.html?requestId=${req.id}">${req.applicantName}</a></td>
         <td><a href="admin-pet-profile.html?id=${req.petId}">${req.petId}</a></td>
         <td>${req.date}</td>
         <td>${req.status}</td>
@@ -27,7 +29,7 @@ fetch("/api/requests")
   });
 
 function updateStatus(requestId, status) {
-  fetch(`/api/requests/${requestId}/status`, {
+  fetch(`${BASE_URL}/api/requests/${requestId}/status`, {
     method: "POST",
     headers: {
       "Content-Type": "application/json"
@@ -44,4 +46,3 @@ function updateStatus(requestId, status) {
       }
     });
 }
-

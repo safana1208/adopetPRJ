@@ -1,9 +1,9 @@
-// נניח ששמרנו את שם המשתמש ב-localStorage בעת ההתחברות
-const clientName = localStorage.getItem("clientName");
+const BASE_URL = "https://adopet-server.onrender.com"; // 🔗 הוספנו כתובת שרת
 
+const clientName = localStorage.getItem("clientName");
 document.getElementById("clientName").textContent = clientName || "Guest";
 
-fetch("/api/requests")
+fetch(`${BASE_URL}/api/requests`)
   .then(res => res.json())
   .then(requests => {
     const myRequests = requests.filter(r => r.applicantName === clientName);
