@@ -56,7 +56,7 @@
     }
 
     function fetchPets() {
-      fetch("/api/pets")
+      fetch("https://adopet-server.onrender.com/api/pets")
         .then(res => res.json())
         .then(data => {
           pets = data;
@@ -133,7 +133,7 @@
         formData.append("data", JSON.stringify(newPet));
         if (imageFile) formData.append("image", imageFile);
 
-        fetch("/api/pets", {
+        fetch("https://adopet-server.onrender.com/api/pets", {
           method: "POST",
           body: formData
         })
@@ -157,3 +157,4 @@
   </script>
 </body>
 </html>
+

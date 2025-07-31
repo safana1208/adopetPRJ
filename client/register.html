@@ -35,6 +35,8 @@
   </div>
 
   <script>
+    const BASE_URL = "https://adopet-server.onrender.com"; 
+
     document.getElementById("register-btn").addEventListener("click", function (e) {
       e.preventDefault();
 
@@ -48,7 +50,7 @@
         return;
       }
 
-      fetch("/api/register", {
+      fetch(`${BASE_URL}/api/register`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ firstName, phone, password })

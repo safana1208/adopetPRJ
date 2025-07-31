@@ -32,7 +32,7 @@
   </div>
 
   <script>
-    fetch("/api/requests")
+    fetch("https://adopet-server.onrender.com/api/requests")
       .then(res => res.json())
       .then(data => {
         const tbody = document.getElementById("requestsTableBody");
@@ -71,7 +71,7 @@
       });
 
     function updateStatus(id, status, petId) {
-      fetch(`/api/requests/${id}/status`, {
+      fetch(`https://adopet-server.onrender.com/api/requests/${id}/status`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ status })
@@ -103,3 +103,4 @@
   </script>
 </body>
 </html>
+

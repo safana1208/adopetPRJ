@@ -17,10 +17,11 @@
   </div>
 
   <script>
+    const BASE_URL = "https://adopet-server.onrender.com"; // 🟢 עדכון לשרת רינדֶר
     const clientName = localStorage.getItem("userFirstName") || "User";
     document.getElementById("clientName").textContent = clientName;
 
-    fetch("/api/requests")
+    fetch(`${BASE_URL}/api/requests`)
       .then(res => res.json())
       .then(allRequests => {
         const myRequests = allRequests.filter(r => r.applicantName === clientName);
@@ -37,7 +38,7 @@
           card.innerHTML = `
             <p><strong>Pet ID:</strong> ${req.petId}</p>
             <p><strong>Status:</strong> ${req.status}</p>
-            <p><strong>Date:</strong> ${req.date}</p>
+            <p><strong>Date:</strong> ${new Date(req.date).toLocaleDateString()}</p>
           `;
           container.appendChild(card);
         });
@@ -49,3 +50,4 @@
   </script>
 </body>
 </html>
+

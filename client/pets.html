@@ -11,6 +11,7 @@
   <div class="grid" id="pet-container"></div>
 
   <script>
+    const BASE_URL = "https://adopet-server.onrender.com"; 
     const container = document.getElementById("pet-container");
     const answers = JSON.parse(localStorage.getItem("questionnaireAnswers")) || {};
 
@@ -26,31 +27,26 @@
       const sizeLower = normalize(pet.size);
       const furLower = normalize(pet.shedding);
 
-      // Filter by type
       if (answers.type && answers.type !== "any" && normalize(answers.type) !== typeLower) return false;
 
-      // Filter by age
       if (answers.age === "kitten" && !ageText.includes("month")) return false;
       if (answers.age === "adult" && !(ageText.includes("year") && parseInt(ageText) < 6)) return false;
       if (answers.age === "senior" && !(ageText.includes("year") && parseInt(ageText) >= 6)) return false;
 
-      // Filter by breed
       if (answers.breed === "specific" && answers.breedName) {
         if (!breedLower.includes(normalize(answers.breedName))) return false;
       } else if (answers.breed === "mixed") {
         if (!breedLower.includes("mixed")) return false;
       }
 
-      // Filter by size
       if (answers.size && normalize(answers.size) !== sizeLower) return false;
 
-      // Filter by fur
       if (answers.fur && answers.fur !== "dont-mind" && normalize(answers.fur) !== furLower) return false;
 
       return true;
     }
 
-    fetch("/api/pets")
+    fetch(`${BASE_URL}/api/pets`)
       .then(res => res.json())
       .then(pets => {
         pets.filter(matchesFilter).forEach(pet => {
@@ -81,3 +77,4 @@
   </script>
 </body>
 </html>
+
