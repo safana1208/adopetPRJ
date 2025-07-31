@@ -23,6 +23,8 @@
   </div>
 
   <script>
+    const BASE_URL = "https://adopet-server.onrender.com"; // השרת שלך
+
     // מעבר לדף יצירת חשבון
     document.getElementById("create-account-btn").addEventListener("click", function () {
       window.location.href = "register.html";
@@ -38,13 +40,15 @@
         return;
       }
 
-      fetch("/api/login", {
+      fetch(`${BASE_URL}/api/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ phone, password }),
       })
-      .then(res => res.json())
-      .then(data => {
+      .then(async res => {
+        if (!res.ok) throw new Error("Login request failed");
+        const data = await res.json();
+
         if (data.success) {
           if (data.role === "admin") {
             window.location.href = "admin-dashboard.html";
